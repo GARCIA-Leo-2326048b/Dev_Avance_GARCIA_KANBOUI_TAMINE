@@ -19,8 +19,6 @@ class Course
     #[ORM\Column(length: 255)]
     private ?string $teacher = null;
 
-    #[ORM\Column]
-    private ?int $duration = null;
 
     public function getId(): ?int
     {
@@ -51,15 +49,4 @@ class Course
         return $this;
     }
 
-    public function getDuration(): ?int
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(int $duration): static
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
 }
