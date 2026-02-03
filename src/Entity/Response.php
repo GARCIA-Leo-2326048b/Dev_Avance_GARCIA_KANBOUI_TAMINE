@@ -8,10 +8,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Tests\Fixtures\Metadata\Get;
+use ApiPlatform\Metadata\Get;
 use App\Repository\QcmRepository;
 use App\Repository\ResponseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResponseRepository::class)]
 #[ApiResource(
@@ -31,16 +32,20 @@ class Response
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $question = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $response = null;
 
     #[ORM\ManyToOne(inversedBy: 'responses')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['user:write'])]
     private ?Qcm $qcm = null;
 
     public function getId(): ?int

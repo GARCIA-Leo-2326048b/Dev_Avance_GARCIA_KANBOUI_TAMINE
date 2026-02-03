@@ -8,11 +8,12 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Tests\Fixtures\Metadata\Get;
+use ApiPlatform\Metadata\Get;
 use App\Repository\QcmRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QcmRepository::class)]
 #[ApiResource(
@@ -32,18 +33,22 @@ class Qcm
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $description = null;
 
     /**
      * @var Collection<int, Response>
      */
     #[ORM\OneToMany(targetEntity: Response::class, mappedBy: 'qcm', orphanRemoval: true)]
+    #[Groups(['user:read'])]
     private Collection $responses;
 
     public function __construct()
@@ -100,12 +105,7 @@ class Qcm
 
     public function removeResponse(Response $response): static
     {
-        if ($this->responses->removeElement($response)) {
-            // set the owning side to null (unless already changed)
-            if ($response->getQcm() === $this) {
-                $response->setQcm(null);
-            }
-        }
+        $this->responses->removeElement($response);
 
         return $this;
     }
