@@ -12,6 +12,7 @@
         "api-platform/symfony": "^4.1.28",
         "doctrine/doctrine-bundle": "^2.18",
         "doctrine/doctrine-migrations-bundle": "^3.7",
+        "doctrine/instantiator": "2.0",
         "doctrine/orm": "^3.6",
         "nelmio/cors-bundle": "^2.6",
         "phpdocumentor/reflection-docblock": "^6.0",
@@ -43,7 +44,10 @@
             "symfony/runtime": true
         },
         "bump-after-update": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "audit": {
+            "block-insecure": false
+        }
     },
     "autoload": {
         "psr-4": {

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}QCM{% endblock %}
+
+{% block body %}
+    <h1>QCM – Introduction à Symfony</h1>
+
+    <ul>
+        <li>Question 1 : Symfony est un …</li>
+        <li>Question 2 : MVC signifie …</li>
+        <li>Question 3 : Doctrine sert à …</li>
+    </ul>
+
+    <a href="{{ path('quiz_results') }}">Voir résultats</a>
+{% endblock %}

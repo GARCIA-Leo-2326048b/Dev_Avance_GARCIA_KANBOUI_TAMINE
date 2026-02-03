@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %}Espace Professeur{% endblock %}
+
+{% block body %}
+    <h1>Dashboard Professeur</h1>
+
+    <ul>
+        <li><a href="{{ path('course_new') }}">Créer un cours</a></li>
+        <li><a href="{{ path('quiz_results') }}">Résultats des QCM</a></li>
+    </ul>
+{% endblock %}

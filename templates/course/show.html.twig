@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}Détail du cours{% endblock %}
+
+{% block body %}
+    <h1>Introduction à Symfony</h1>
+
+    <p>Cours de découverte du framework Symfony.</p>
+
+    <h2>Vidéo</h2>
+    <video width="600" controls>
+        <source src="/uploads/videos/demo.mp4">
+    </video>
+
+    <h2>Document</h2>
+    <a href="/uploads/documents/support.pdf" target="_blank">
+        Télécharger le PDF
+    </a>
+
+    <h2>QCM</h2>
+    <a href="{{ path('quiz_index') }}">Passer le QCM</a>
+{% endblock %}
