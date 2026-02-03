@@ -33,12 +33,15 @@ class QcmFixtures extends Fixture
             ],
         ];
 
-        foreach ($qcmsData as $data) {
+        foreach ($qcmsData as $index => $data) {
             $qcm = new Qcm();
-            $qcm->setTitle($data['title']);
-            $qcm->setDescription($data['description']);
+            $qcm
+                ->setTitle($data['title'])
+                ->setDescription($data['description']);
 
             $manager->persist($qcm);
+
+            $this->addReference('qcm_' . $index, $qcm);
         }
 
         $manager->flush();
