@@ -14,12 +14,23 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * Construit le formulaire d'inscription.
+     *
+     * Définit les champs du formulaire :
+     * - email
+     * - acceptation des conditions d'utilisation
+     * - mot de passe (non mappé, encodé dans le contrôleur)
+     *
+     * @param FormBuilderInterface $builder le constructeur de formulaire
+     * @param array $options les options du formulaire
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
-                                'mapped' => false,
+                'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
@@ -27,8 +38,6 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -38,14 +47,19 @@ class RegistrationFormType extends AbstractType
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
+    /**
+     * Configure les options du formulaire.
+     *
+     * Associe le formulaire à l'entité User.
+     *
+     * @param OptionsResolver $resolver le gestionnaire d'options
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

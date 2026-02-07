@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Get;
-use App\Repository\QcmRepository;
 use App\Repository\ResponseRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -48,16 +47,32 @@ class Response
     #[Groups(['user:write'])]
     private ?Qcm $qcm = null;
 
+    /**
+     * Retourne l'identifiant de la réponse.
+     *
+     * @return int|null l'identifiant de la réponse ou null si non enregistrée
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Retourne la question associée à la réponse.
+     *
+     * @return string|null la question ou null
+     */
     public function getQuestion(): ?string
     {
         return $this->question;
     }
 
+    /**
+     * Définit la question associée à la réponse.
+     *
+     * @param string $question la question
+     * @return $this
+     */
     public function setQuestion(string $question): static
     {
         $this->question = $question;
@@ -65,11 +80,22 @@ class Response
         return $this;
     }
 
+    /**
+     * Retourne le contenu de la réponse.
+     *
+     * @return string|null la réponse ou null
+     */
     public function getResponse(): ?string
     {
         return $this->response;
     }
 
+    /**
+     * Définit le contenu de la réponse.
+     *
+     * @param string $response la réponse
+     * @return $this
+     */
     public function setResponse(string $response): static
     {
         $this->response = $response;
@@ -77,11 +103,22 @@ class Response
         return $this;
     }
 
+    /**
+     * Retourne le QCM associé à cette réponse.
+     *
+     * @return Qcm|null le QCM associé
+     */
     public function getQcm(): ?Qcm
     {
         return $this->qcm;
     }
 
+    /**
+     * Définit le QCM associé à cette réponse.
+     *
+     * @param Qcm|null $qcm le QCM à associer
+     * @return $this
+     */
     public function setQcm(?Qcm $qcm): static
     {
         $this->qcm = $qcm;
