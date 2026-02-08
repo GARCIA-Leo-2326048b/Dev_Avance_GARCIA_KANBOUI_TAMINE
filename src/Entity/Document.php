@@ -23,37 +23,41 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(),
         new Delete(),
     ],
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']]
+    normalizationContext: ['groups' => ['Document:read']],
+    denormalizationContext: ['groups' => ['Document:write']]
 )]
 class Document
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['Document:read', 'qcm:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['Document:read', 'Document:write'])]
     private ?string $link = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['Document:read', 'Document:write', 'qcm:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['Document:read', 'Document:write'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['Document:read', 'Document:write'])]
     private ?int $pages = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['Document:read', 'Document:write', 'qcm:read'])]
     private ?User $teacher = null;
 
     #[ORM\OneToOne(inversedBy: 'document', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['Document:read', 'Document:write'])]
     private ?Qcm $qcm = null;
 
     /**

@@ -25,29 +25,31 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(),
         new Delete(),
     ],
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']]
+    normalizationContext: ['groups' => ['qcm:read']],
+    denormalizationContext: ['groups' => ['qcm:write']]
 )]
 class Qcm
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['qcm:read', 'Document:read', 'Video:read', 'Question:read', 'QuizzAttemp:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['qcm:read', 'qcm:write', 'Document:read', 'Video:read', 'Question:read', 'QuizzAttemp:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['qcm:read', 'qcm:write'])]
     private ?string $description = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['qcm:read', 'qcm:write'])]
     private ?Document $document = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['qcm:read', 'qcm:write'])]
     private ?Video $video = null;
 
     /**

@@ -2,35 +2,62 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Get(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+    ],
+    normalizationContext: ['groups' => ['Video:read']],
+    denormalizationContext: ['groups' => ['Video:write']]
+)]
 class Video
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['Video:read', 'qcm:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['Video:read', 'Video:write'])]
     private ?string $link = null;
 
     #[ORM\Column]
+    #[Groups(['Video:read', 'Video:write'])]
     private ?int $duration = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['Video:read', 'Video:write', 'qcm:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['Video:read', 'Video:write'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['Video:read', 'Video:write', 'qcm:read'])]
     private ?User $teacher = null;
 
     #[ORM\OneToOne(inversedBy: 'video', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['Video:read', 'Video:write'])]
     private ?Qcm $qcm = null;
 
     /**

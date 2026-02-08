@@ -23,26 +23,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(),
         new Delete(),
     ],
-    normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']]
+    normalizationContext: ['groups' => ['Response:read']],
+    denormalizationContext: ['groups' => ['Response:write']]
 )]
 class Response
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['Response:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['Response:read', 'Response:write'])]
     private ?string $label = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['Response:read', 'Response:write'])]
     private ?Question $question = null;
 
     #[ORM\Column]
+    #[Groups(['Response:read', 'Response:write'])]
     private ?bool $isCorrect = null;
 
     /**
