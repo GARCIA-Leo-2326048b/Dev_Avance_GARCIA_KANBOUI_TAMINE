@@ -36,16 +36,7 @@ class Response
 
     #[ORM\Column(length: 255)]
     #[Groups(['user:read', 'user:write'])]
-    private ?string $question = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
-    private ?string $response = null;
-
-    #[ORM\ManyToOne(inversedBy: 'responses')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['user:write'])]
-    private ?Qcm $qcm = null;
+    private ?string $label = null;
 
     /**
      * Retourne l'identifiant de la réponse.
@@ -58,70 +49,24 @@ class Response
     }
 
     /**
-     * Retourne la question associée à la réponse.
-     *
-     * @return string|null la question ou null
-     */
-    public function getQuestion(): ?string
-    {
-        return $this->question;
-    }
-
-    /**
-     * Définit la question associée à la réponse.
-     *
-     * @param string $question la question
-     * @return $this
-     */
-    public function setQuestion(string $question): static
-    {
-        $this->question = $question;
-
-        return $this;
-    }
-
-    /**
      * Retourne le contenu de la réponse.
      *
      * @return string|null la réponse ou null
      */
     public function getResponse(): ?string
     {
-        return $this->response;
+        return $this->label;
     }
 
     /**
      * Définit le contenu de la réponse.
      *
-     * @param string $response la réponse
+     * @param string $label la réponse
      * @return $this
      */
-    public function setResponse(string $response): static
+    public function setResponse(string $label): static
     {
-        $this->response = $response;
-
-        return $this;
-    }
-
-    /**
-     * Retourne le QCM associé à cette réponse.
-     *
-     * @return Qcm|null le QCM associé
-     */
-    public function getQcm(): ?Qcm
-    {
-        return $this->qcm;
-    }
-
-    /**
-     * Définit le QCM associé à cette réponse.
-     *
-     * @param Qcm|null $qcm le QCM à associer
-     * @return $this
-     */
-    public function setQcm(?Qcm $qcm): static
-    {
-        $this->qcm = $qcm;
+        $this->label = $label;
 
         return $this;
     }
