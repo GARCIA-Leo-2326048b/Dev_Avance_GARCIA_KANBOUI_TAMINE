@@ -38,6 +38,13 @@ class Response
     #[Groups(['user:read', 'user:write'])]
     private ?string $label = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Question $question = null;
+
+    #[ORM\Column]
+    private ?bool $isCorrect = null;
+
     /**
      * Retourne l'identifiant de la réponse.
      *
@@ -67,6 +74,30 @@ class Response
     public function setResponse(string $label): static
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?Question $question): static
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    public function isCorrect(): ?bool
+    {
+        return $this->isCorrect;
+    }
+
+    public function setIsCorrect(bool $isCorrect): static
+    {
+        $this->isCorrect = $isCorrect;
 
         return $this;
     }
