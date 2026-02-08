@@ -30,7 +30,7 @@ class Video
     private ?User $teacher = null;
 
     #[ORM\OneToOne(inversedBy: 'video', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Qcm $qcm = null;
 
     /**
