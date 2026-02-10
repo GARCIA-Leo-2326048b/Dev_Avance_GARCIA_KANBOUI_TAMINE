@@ -20,7 +20,7 @@
                         <div class="course-card-body">
                             <h3>{{ video.title }}</h3>
                             <p class="course-meta">
-                                👨‍🏫 {{ video.teacher.email ?? 'Professeur' }} · ⏱ {{ video.duration }} min
+                                👨‍🏫 {{ video.teacher.name ~ ' ' ~ video.teacher.surname ?? 'Professeur' }} · ⏱ {{ video.duration }} min
                             </p>
 
                             <div class="course-actions">
