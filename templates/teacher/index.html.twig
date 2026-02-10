@@ -2,10 +2,36 @@
 {% block title %}Espace Professeur{% endblock %}
 
 {% block body %}
-    <h1>Dashboard Professeur</h1>
+    <h1>Espace Professeur</h1>
+    <p class="dashboard-subtitle">
+        Gérez vos cours, contenus et évaluations.
+    </p>
 
-    <ul>
-        <li><a href="{{ path('course_new') }}">Créer un cours</a></li>
-        <li><a href="{{ path('quiz_results') }}">Résultats des QCM</a></li>
-    </ul>
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+            <div class="dashboard-icon blue">📚</div>
+            <h3>Créer un cours</h3>
+            <p>
+                Ajouter une nouvelle vidéo ou un document pédagogique
+                pour vos étudiants.
+            </p>
+            <a href="{{ path('course_new') }}" class="btn btn-primary">
+                Créer un cours
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-icon green">📝</div>
+            <h3>Résultats des QCM</h3>
+            <p>
+                Consulter les résultats, statistiques et performances
+                des étudiants.
+            </p>
+            <a href="{{ path('quiz_results') }}" class="btn btn-secondary">
+                Voir les résultats
+            </a>
+        </div>
+
+    </div>
 {% endblock %}

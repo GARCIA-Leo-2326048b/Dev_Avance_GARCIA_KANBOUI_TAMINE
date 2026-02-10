@@ -4,37 +4,66 @@
 {% block body %}
     <h1>Liste des contenus</h1>
 
-    <h2>📄 Documents</h2>
-    {% if documents is empty %}
-        <p>Aucun document.</p>
-    {% else %}
-        <ul>
-            {% for document in documents %}
-                <li>
-                    {{ document.title }} —
-                    <a href="{{ document.link }}" target="_blank">Télécharger</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <section class="content-section">
+        <h2 class="section-title">🎥 Vidéos de cours</h2>
 
-    <hr>
+        {% if videos is empty %}
+            <p>Aucune vidéo.</p>
+        {% else %}
+            <div class="course-grid">
+                {% for video in videos %}
+                    <div class="course-card">
+                        <div class="course-card-header video-header">
+                            <div class="play-icon">▶</div>
+                        </div>
 
-    <h2>🎥 Vidéos</h2>
-    {% if videos is empty %}
-        <p>Aucune vidéo.</p>
-    {% else %}
-        <ul>
-            {% for video in videos %}
-                <li>
-                    {{ video.title }}<br>
-                    <video controls width="400">
-                        <source src="{{ video.link }}">
-                    </video>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+                        <div class="course-card-body">
+                            <h3>{{ video.title }}</h3>
+                            <p class="course-meta">
+                                👨‍🏫 {{ video.teacher.email ?? 'Professeur' }} · ⏱ {{ video.duration }} min
+                            </p>
 
-    <a href="{{ path('course_new') }}">Ajouter un contenu</a>
+                            <div class="course-actions">
+                                <a href="#" class="btn btn-secondary">Générer QCM (Prof)</a>
+                                <a href="{{ video.link }}" class="btn btn-primary">Voir la vidéo</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="content-section">
+        <h2 class="section-title">📄 Documents de cours</h2>
+
+        {% if documents is empty %}
+            <p>Aucun document.</p>
+        {% else %}
+            <div class="course-grid">
+                {% for document in documents %}
+                    <div class="course-card">
+                        <div class="course-card-header document-header">
+                            <div class="doc-icon">📄</div>
+                        </div>
+
+                        <div class="course-card-body">
+                            <h3>{{ document.title }}</h3>
+                            <p class="course-meta">
+                                👨‍🏫 {{ document.teacher.email ?? 'Professeur' }} · 📑 {{ document.pages }} pages
+                            </p>
+
+                            <div class="course-actions">
+                                <a href="#" class="btn btn-secondary">Générer QCM (Prof)</a>
+                                <a href="{{ document.link }}" target="_blank" class="btn btn-primary">
+                                    Télécharger
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+
 {% endblock %}

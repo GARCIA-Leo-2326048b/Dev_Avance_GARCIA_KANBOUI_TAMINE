@@ -3,41 +3,55 @@
 
 {% block body %}
     <h1>Ajouter un contenu pédagogique</h1>
+    <p class="page-subtitle">
+        Choisissez le type de contenu que vous souhaitez mettre à disposition.
+    </p>
 
-    <p>Veuillez choisir le type de contenu à ajouter :</p>
+    <div class="content-add-grid">
 
-    <hr>
+        <div class="content-add-card">
+            <div class="content-add-icon video-icon">🎥</div>
 
-    <h2>Ajouter une vidéo</h2>
+            <h3>Ajouter une vidéo</h3>
+            <p>
+                Importez une vidéo de cours au format MP4.
+            </p>
 
-    <form method="post"
-          enctype="multipart/form-data"
-          action="{{ path('video_new') }}">
+            <form method="post"
+                  enctype="multipart/form-data"
+                  action="{{ path('video_new') }}">
 
-        <label>Titre de la vidéo</label><br>
-        <input type="text" name="title" required><br><br>
+                <label>Titre de la vidéo</label>
+                <input type="text" name="title" required>
 
-        <label>Fichier vidéo (MP4)</label><br>
-        <input type="file" name="video" accept="video/mp4" required><br><br>
+                <label>Fichier vidéo (MP4)</label>
+                <input type="file" name="video" accept="video/mp4" required>
 
-        <button>Uploader la vidéo</button>
-    </form>
+                <button class="btn btn-primary">Uploader la vidéo</button>
+            </form>
+        </div>
 
-    <hr>
+        <div class="content-add-card">
+            <div class="content-add-icon document-icon">📄</div>
 
-    <h2>Ajouter un document</h2>
+            <h3>Ajouter un document</h3>
+            <p>
+                Importez un document pédagogique au format PDF.
+            </p>
 
-    <form method="post"
-          enctype="multipart/form-data"
-          action="{{ path('document_new') }}">
+            <form method="post"
+                  enctype="multipart/form-data"
+                  action="{{ path('document_new') }}">
 
-        <label>Titre du document</label><br>
-        <input type="text" name="title" required><br><br>
+                <label>Titre du document</label>
+                <input type="text" name="title" required>
 
-        <label>Fichier document (PDF)</label><br>
-        <input type="file" name="document" accept="application/pdf" required><br><br>
+                <label>Fichier document (PDF)</label>
+                <input type="file" name="document" accept="application/pdf" required>
 
-        <button>Uploader le document</button>
-    </form>
+                <button class="btn btn-secondary">Uploader le document</button>
+            </form>
+        </div>
 
+    </div>
 {% endblock %}
