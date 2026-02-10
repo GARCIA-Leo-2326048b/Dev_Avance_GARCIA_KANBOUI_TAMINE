@@ -23,12 +23,20 @@
     <div class="logo">
         <a href="{{ path('home') }}">EduLearn</a>
     </div>
-    <div>
-        <a href="{{ path('course_index') }}">Cours</a> |
-        <a href="{{ path('quiz_index') }}">QCM</a> |
-        <a href="{{ path('teacher_dashboard') }}">Espace prof</a> |
-        <a href="{{ path('app_login') }}">Connexion</a>
-    </div>
+
+    {% if app.user %}
+        <nav>
+            <a href="{{ path('course_index') }}">Cours</a> |
+            <a href="{{ path('quiz_index') }}">QCM</a> |
+            <a href="{{ path('teacher_dashboard') }}">Espace prof</a> |
+            <a href="{{ path('app_logout') }}">Déconnexion</a>
+        </nav>
+    {% else %}
+        <nav>
+            <a href="{{ path('app_login') }}">Connexion</a>
+        </nav>
+    {% endif %}
+
 </nav>
 
 <div class="container">
