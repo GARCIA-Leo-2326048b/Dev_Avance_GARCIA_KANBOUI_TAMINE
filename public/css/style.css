@@ -271,3 +271,128 @@ footer {
     font-size: 14px;
 }
 
+.auth-container {
+    min-height: calc(100vh - 160px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    padding: 36px;
+    border-radius: 20px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.auth-card h1 {
+    font-size: 26px;
+    margin-bottom: 6px;
+}
+
+.auth-subtitle {
+    color: #64748b;
+    margin-bottom: 28px;
+    font-size: 14px;
+}
+
+.auth-error {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.auth-info {
+    background: #e0f2fe;
+    color: #075985;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+}
+
+.auth-form label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.auth-form input {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cbd5f5;
+    font-size: 14px;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.btn-full {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.auth-footer {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.auth-footer a {
+    margin-left: 6px;
+    font-weight: 700;
+}
+
+.auth-form .form-row,
+.auth-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.auth-form label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.auth-form input,
+.auth-form select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cbd5f5;
+    font-size: 14px;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.auth-form .checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.auth-card ul {
+    margin-bottom: 16px;
+    padding-left: 20px;
+    color: #991b1b;
+    font-size: 14px;
+}
