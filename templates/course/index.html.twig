@@ -2,13 +2,39 @@
 {% block title %}Cours{% endblock %}
 
 {% block body %}
-    <h1>Liste des cours</h1>
+    <h1>Liste des contenus</h1>
 
-    <ul>
-        <li><a href="{{ path('course_index') }}">Introduction à Symfony</a></li>
-        <li><a href="{{ path('course_index') }}">API Platform</a></li>
-        <li><a href="{{ path('course_index') }}">Twig Templates</a></li>
-    </ul>
+    <h2>📄 Documents</h2>
+    {% if documents is empty %}
+        <p>Aucun document.</p>
+    {% else %}
+        <ul>
+            {% for document in documents %}
+                <li>
+                    {{ document.title }} —
+                    <a href="{{ document.link }}" target="_blank">Télécharger</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-    <a href="{{ path('course_new') }}">Créer un cours</a>
+    <hr>
+
+    <h2>🎥 Vidéos</h2>
+    {% if videos is empty %}
+        <p>Aucune vidéo.</p>
+    {% else %}
+        <ul>
+            {% for video in videos %}
+                <li>
+                    {{ video.title }}<br>
+                    <video controls width="400">
+                        <source src="{{ video.link }}">
+                    </video>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <a href="{{ path('course_new') }}">Ajouter un contenu</a>
 {% endblock %}

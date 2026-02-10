@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\DocumentRepository;
+use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,9 +12,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class CourseController extends AbstractController
 {
     #[Route('/courses', name: 'course_index')]
-    public function index(): Response
+    public function index(
+        DocumentRepository $documentRepository,
+        VideoRepository $videoRepository
+    ): Response
     {
-        return $this->render('course/index.html.twig');
+        return $this->render('course/index.html.twig', [
+            'documents' => $documentRepository->findAll(),
+            'videos' => $videoRepository->findAll(),
+        ]);
     }
 
     #[Route('/courses/new', name: 'course_new')]
