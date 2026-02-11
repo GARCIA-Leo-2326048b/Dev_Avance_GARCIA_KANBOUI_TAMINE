@@ -31,11 +31,11 @@ class Response
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['Response:read'])]
+    #[Groups(['Response:read', 'qcm:read', 'Question:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['Response:read', 'Response:write'])]
+    #[Groups(['Response:read', 'Response:write', 'qcm:read', 'Question:read', 'qcm:write'])]
     private ?string $label = null;
 
     #[ORM\ManyToOne]
@@ -44,7 +44,7 @@ class Response
     private ?Question $question = null;
 
     #[ORM\Column]
-    #[Groups(['Response:read', 'Response:write'])]
+    #[Groups(['Response:read', 'Response:write', 'qcm:read', 'Question:read', 'qcm:write'])]
     private ?bool $isCorrect = null;
 
     /**
@@ -62,7 +62,7 @@ class Response
      *
      * @return string|null la réponse ou null
      */
-    public function getResponse(): ?string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -73,7 +73,7 @@ class Response
      * @param string $label la réponse
      * @return $this
      */
-    public function setResponse(string $label): static
+    public function setLabel(string $label): static
     {
         $this->label = $label;
 
@@ -92,7 +92,7 @@ class Response
         return $this;
     }
 
-    public function isCorrect(): ?bool
+    public function getIsCorrect(): ?bool
     {
         return $this->isCorrect;
     }
