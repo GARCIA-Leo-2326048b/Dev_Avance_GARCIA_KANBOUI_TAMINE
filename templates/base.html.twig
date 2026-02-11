@@ -14,20 +14,21 @@
         <a href="{{ path('home') }}">EduLearn</a>
     </div>
 
-    {% if app.user %}
-        <nav>
-            <a href="{{ path('course_index') }}">Cours</a> |
-            <a href="{{ path('quiz_index') }}">QCM</a> |
-            <a href="{{ path('teacher_dashboard') }}">Espace prof</a> |
-            <a href="{{ path('app_logout') }}">Déconnexion</a>
-        </nav>
-    {% else %}
-        <nav>
-            <a href="{{ path('app_login') }}">Connexion</a>
-        </nav>
-    {% endif %}
+    <div class="nav-links">
+        {% if app.user %}
+            <a href="{{ path('course_index') }}">Cours</a>
 
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('teacher_dashboard') }}">Espace prof</a>
+            {% endif %}
+
+            <a href="{{ path('app_logout') }}">Déconnexion</a>
+        {% else %}
+            <a href="{{ path('app_login') }}">Connexion</a>
+        {% endif %}
+    </div>
 </nav>
+
 
 <div class="container">
     {% block body %}{% endblock %}
