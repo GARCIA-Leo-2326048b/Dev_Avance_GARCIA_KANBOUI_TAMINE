@@ -18,7 +18,7 @@
         {% if app.user %}
             <a href="{{ path('course_index') }}">Cours</a>
 
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_TEACHER') %}
                 <a href="{{ path('teacher_dashboard') }}">Espace prof</a>
             {% endif %}
 

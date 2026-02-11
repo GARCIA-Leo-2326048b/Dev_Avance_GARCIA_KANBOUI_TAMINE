@@ -24,7 +24,7 @@ class RegistrationController extends AbstractController
             $userType = $form->get('userType')->getData();
 
             if ($userType === 'teacher') {
-                $user->setRoles(['ROLE_ADMIN']);
+                $user->setRoles(['ROLE_TEACHER']);
             } else {
                 $user->setRoles(['ROLE_USER']);
             }
