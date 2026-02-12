@@ -16,6 +16,26 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
+    public function findIdByLink(string $link): ?int
+    {
+        return $this->createQueryBuilder('d')
+            ->select('d.id')
+            ->andWhere('d.link = :link')
+            ->setParameter('link', $link)
+            ->getQuery()
+            ->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_SINGLE_SCALAR);
+    }
+
+    public function findById(int $id): ?Document
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
 //    /**
 //     * @return Document[] Returns an array of Document objects
 //     */

@@ -73,7 +73,7 @@ class Response
      * @param string $label la réponse
      * @return $this
      */
-    public function setResponse(string $label): static
+    public function setLabel(string $label): static
     {
         $this->label = $label;
 
