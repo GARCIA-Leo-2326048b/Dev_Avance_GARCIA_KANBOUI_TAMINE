@@ -37,7 +37,7 @@ class Qcm
     #[Groups(['qcm:read', 'Document:read', 'Video:read', 'Question:read', 'QuizzAttemp:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     #[Groups(['qcm:read', 'qcm:write', 'Document:read', 'Video:read', 'Question:read', 'QuizzAttemp:read'])]
     private ?string $title = null;
 
@@ -45,15 +45,19 @@ class Qcm
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?string $description = null;
 
-    #[ORM\OneToOne]
+    #[ORM\OneToOne(targetEntity: Document::class, inversedBy: 'qcm')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?Document $document = null;
 
-    #[ORM\OneToOne]
+
+    #[ORM\OneToOne(targetEntity: Video::class, inversedBy: 'qcm')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?Video $video = null;
 
-    #[ORM\OneToMany(mappedBy: 'qcm', targetEntity: Question::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'qcm', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['qcm:read', 'qcm:write'])]
     private Collection $questions;
 
@@ -121,26 +125,37 @@ class Qcm
         return $this;
     }
 
-    public function getDocument(): ?Document
-    {
+    public function getDocument(): ?Document {
+
         return $this->document;
+
     }
 
     public function setDocument(?Document $document): static
     {
         $this->document = $document;
 
+        if ($document !== null && $document->getQcm() !== $this) {
+            $document->setQcm($this);
+        }
+
         return $this;
     }
 
-    public function getVideo(): ?Video
-    {
+
+    public function getVideo(): ?Video {
+
         return $this->video;
+
     }
 
     public function setVideo(?Video $video): static
     {
         $this->video = $video;
+
+        if ($video !== null && $video->getQcm() !== $this) {
+            $video->setQcm($this);
+        }
 
         return $this;
     }
