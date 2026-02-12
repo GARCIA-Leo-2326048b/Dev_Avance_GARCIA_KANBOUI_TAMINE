@@ -10,8 +10,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Le DocumentController gère l’ajout de documents pédagogiques.
+ * Il s’occupe du traitement de l’upload d’un fichier PDF,
+ * de son enregistrement physique sur le serveur,
+ * ainsi que de la création de l’entité correspondante en base de données.
+ */
 class DocumentController extends AbstractController
 {
+    /**
+     * Traite l’ajout d’un nouveau document.
+     * Si la requête est en POST, le fichier envoyé est récupéré,
+     * vérifié (format PDF uniquement), renommé avec un identifiant unique
+     * puis déplacé dans le dossier /public/uploads/documents.
+     * Une entité Document est ensuite créée et persistée en base.
+     * En cas d’échec ou de requête non valide, une page d’erreur est affichée.
+     *
+     * @param Request $request Requête HTTP contenant les données du formulaire
+     * @param EntityManagerInterface $em Gestionnaire Doctrine pour la persistance
+     * @return Response Réponse HTTP après traitement ou affichage d’erreur
+     */
     #[Route('/documents/new', name: 'document_new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {

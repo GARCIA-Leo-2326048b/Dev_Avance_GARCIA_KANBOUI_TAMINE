@@ -14,8 +14,31 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * Le MistralAIController permet de générer automatiquement un QCM
+ * à partir d’un document PDF existant. Il extrait le texte du document,
+ * envoie son contenu à un service d’intelligence artificielle (Mistral),
+ * récupère un QCM au format JSON puis crée les entités correspondantes
+ * (Qcm, Question, Response) en base de données.
+ */
 class MistralAIController extends AbstractController
 {
+    /**
+     * Génère un QCM à partir d’un document PDF.
+     * La méthode récupère le lien du document via la requête,
+     * localise le fichier sur le serveur, extrait son contenu texte,
+     * construit un prompt pour MistralAI afin de produire un QCM structuré en JSON,
+     * puis transforme ce JSON en entités persistées en base de données.
+     * Une fois le QCM sauvegardé, l’utilisateur est redirigé vers la liste des cours.
+     *
+     * @param EntityManagerInterface $em Gestionnaire Doctrine pour la persistance
+     * @param DocumentRepository $documentRepository Repository permettant de récupérer le document en base
+     * @param Request $request Requête HTTP contenant le lien du document
+     * @param MistralAIService $mistralAIService Service chargé d’interroger l’API Mistral
+     * @param KernelInterface $kernel Permet d’accéder au répertoire racine du projet
+     * @return Response Redirection vers la page des cours après génération
+     * @throws \Exception En cas d’erreur de lecture du document ou de traitement du JSON
+     */
     #[Route('/QCM/Document', name: 'qcm_document')]
     public function qcmDocument(
         EntityManagerInterface $em,
@@ -31,21 +54,16 @@ class MistralAIController extends AbstractController
 
         $id = $documentRepository->findIdByLink($documentUrl);
 
-        // Convertir l'URL en chemin local
         $projectDir = $kernel->getProjectDir();
         $publicDir = $projectDir . '/public';
 
-        // Extraire le chemin relatif depuis l'URL
         $relativePath = parse_url($documentUrl, PHP_URL_PATH);
-
-        // Construire le chemin absolu sur le serveur
         $filePath = $publicDir . $relativePath;
 
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException("Le fichier n'existe pas : " . $filePath);
         }
 
-        // Extraire le texte du PDF
         $parser = new Parser();
         try {
             $pdf = $parser->parseFile($filePath);
@@ -54,7 +72,6 @@ class MistralAIController extends AbstractController
             throw $this->createNotFoundException('Impossible de lire le document : ' . $e->getMessage());
         }
 
-        // Générer le QCM
         $prompt = "
 Voici le contenu d'un document de cours :
 ---
@@ -62,37 +79,12 @@ Voici le contenu d'un document de cours :
 ---
 
 ### Instructions pour générer un QCM :
-1. **Génère un QCM de 5 questions** basées uniquement sur le contenu ci-dessus.
-2. **Chaque question** doit avoir **4 réponses possibles**.
-3. **Indique la bonne réponse** pour chaque question avec un champ `isCorrect: true`.
-4. **Ne modifie pas le champ 'document'.
-5. **Le format de sortie doit être un JSON valide** respectant strictement la structure suivante:
-
-{
-  \"title\": \"Titre du QCM basé sur le document\",
-  \"description\": \"Description du QCM\",
-  \"document\": \"/api/documents/$id\",
-  \"questions\": [
-    {
-      \"question\": \"Texte de la question 1\",
-      \"responses\": [
-        { \"label\": \"Réponse A\", \"isCorrect\": false },
-        { \"label\": \"Réponse B\", \"isCorrect\": true },
-        { \"label\": \"Réponse C\", \"isCorrect\": false },
-        { \"label\": \"Réponse D\", \"isCorrect\": false }
-      ]
-    },
-    {
-      \"question\": \"Texte de la question 2\",
-      \"responses\": [
-        { \"label\": \"Réponse A\", \"isCorrect\": false },
-        { \"label\": \"Réponse B\", \"isCorrect\": false },
-        { \"label\": \"Réponse C\", \"isCorrect\": true },
-        { \"label\": \"Réponse D\", \"isCorrect\": false }
-      ]
-    }
-  ]
-}";
+1. Génère un QCM de 5 questions basées uniquement sur le contenu ci-dessus.
+2. Chaque question doit avoir 4 réponses possibles.
+3. Indique la bonne réponse pour chaque question avec un champ isCorrect: true.
+4. Ne modifie pas le champ 'document'.
+5. Le format de sortie doit être un JSON valide respectant strictement la structure fournie.
+";
 
         $mistralResponse = $mistralAIService->askMistral($prompt);
         $qcmJson = $mistralResponse['choices'][0]['message']['content'];
@@ -109,11 +101,8 @@ Voici le contenu d'un document de cours :
         $qcm->setDescription($data['description']);
         $documentUrl = $data['document'];
 
-        // Extraire l'ID avec une regex
         if (preg_match('#/api/documents/(\d+)#', $documentUrl, $matches)) {
             $documentId = (int) $matches[1];
-
-            // Récupérer l'entité Document depuis le repository
             $document = $documentRepository->findById($documentId);
 
             if (!$document) {
@@ -127,14 +116,12 @@ Voici le contenu d'un document de cours :
 
         $em->persist($qcm);
 
-        //Boucle sur les questions
         foreach ($data['questions'] as $q) {
             $question = new Question();
             $question->setQuestion($q['question']);
             $question->setQcm($qcm);
             $em->persist($question);
 
-            //Boucle sur les réponses
             foreach ($q['responses'] as $r) {
                 $qcmResponse = new QcmResponse();
                 $qcmResponse->setLabel($r['label']);
@@ -144,7 +131,6 @@ Voici le contenu d'un document de cours :
             }
         }
 
-        //Sauvegarde en base
         $em->flush();
         return $this->redirectToRoute('course_index');
     }

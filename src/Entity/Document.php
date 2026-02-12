@@ -13,6 +13,7 @@ use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ApiResource(
     operations: [
