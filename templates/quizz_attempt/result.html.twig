@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultat du QCM{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5">
+
+        <div class="card shadow-lg p-4">
+
+            <h1 class="mb-4 text-center">Résultat du QCM</h1>
+
+            <div class="text-center">
+
+                <h2 class="
+                {% if grade >= 16 %}
+                    text-success
+                {% elseif grade >= 10 %}
+                    text-warning
+                {% else %}
+                    text-danger
+                {% endif %}
+            ">
+                    {{ grade|number_format(2, '.', ',') }} / 20
+                </h2>
+
+                <p class="mt-3">
+                    Vous avez obtenu <strong>{{ correct }}</strong> bonne(s) réponse(s)
+                    sur <strong>{{ total }}</strong> question(s).
+                </p>
+
+                <hr>
+
+                {% if grade >= 16 %}
+                    <div class="alert alert-success">
+                        🎉 Excellent travail !
+                    </div>
+                {% elseif grade >= 10 %}
+                    <div class="alert alert-warning">
+                        👍 Bon travail, mais vous pouvez encore progresser.
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                        ❌ Il faut réviser et réessayer.
+                    </div>
+                {% endif %}
+
+                <div class="mt-4">
+                    <a href="{{ path('course_index') }}" class="btn btn-secondary">
+                        Retour à l'accueil
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

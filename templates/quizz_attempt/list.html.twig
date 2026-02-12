@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tentatives des étudiants{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <h1>Résultats des QCM</h1>
+        <p class="page-subtitle">
+            Liste complète des tentatives réalisées par les étudiants.
+        </p>
+
+        {% if attempts is empty %}
+
+            <div class="dashboard-card" style="text-align:center;">
+                <div class="dashboard-icon blue">📭</div>
+                <h3>Aucune tentative</h3>
+                <p>Aucun étudiant n'a encore passé de QCM.</p>
+            </div>
+
+        {% else %}
+
+            <div class="dashboard-grid">
+
+                {% for attempt in attempts %}
+
+                    <div class="dashboard-card">
+
+                        <div class="dashboard-icon
+                        {% if attempt.grade >= 10 %}
+                            green
+                        {% else %}
+                            blue
+                        {% endif %}
+                    ">
+                            🎓
+                        </div>
+
+                        <h3>
+                            {{ attempt.student.name }}
+                            {{ attempt.student.surname }}
+                        </h3>
+
+                        <p>
+                            QCM : <strong>{{ attempt.qcm.title }}</strong>
+                        </p>
+
+                        <p>
+                            Note obtenue :
+                            <strong style="
+                            {% if attempt.grade >= 16 %}
+                                    color: #059669;
+                            {% elseif attempt.grade >= 10 %}
+                                    color: #2563eb;
+                            {% else %}
+                                    color: #dc2626;
+                            {% endif %}
+                                    ">
+                                {{ attempt.grade|number_format(2) }} / 20
+                            </strong>
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

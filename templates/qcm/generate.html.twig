@@ -7,7 +7,8 @@
     <h1>{{ qcm.title }}</h1>
     <p>{{ qcm.description }}</p>
 
-    <form method="post">
+    <form method="post" action="{{ path('quizz_attempt_result') }}">
+        <input type="hidden" name="qcm_id" value="{{ qcm.id }}">
 
         {% for question in qcm.questions %}
 
@@ -17,7 +18,7 @@
                 {% for response in question.responses %}
                     <div>
                         <input type="radio"
-                               name="question_{{ question.id }}"
+                               name="answers[{{ question.id }}]"
                                value="{{ response.id }}"
                                required>
 
@@ -30,6 +31,7 @@
             <hr>
 
         {% endfor %}
+
 
         <button type="submit" class="btn btn-primary">
             Valider le QCM
