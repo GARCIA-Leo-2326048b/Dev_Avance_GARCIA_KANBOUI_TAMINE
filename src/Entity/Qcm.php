@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Question;
 
 #[ORM\Entity(repositoryClass: QcmRepository::class)]
 #[ApiResource(
@@ -44,13 +45,25 @@ class Qcm
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?string $description = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne]
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?Document $document = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne]
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?Video $video = null;
+
+    #[ORM\OneToMany(mappedBy: 'qcm', targetEntity: Question::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['qcm:read', 'qcm:write'])]
+    private Collection $questions;
+
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
+
 
     /**
      * Retourne l'identifiant du QCM.
@@ -131,4 +144,45 @@ class Qcm
 
         return $this;
     }
+
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): static
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setQcm($this); // important : met à jour le côté owning
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            if ($question->getQcm() === $this) {
+                $question->setQcm(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setQuestions(iterable $questions): static
+    {
+        $this->questions = new ArrayCollection();
+
+        foreach ($questions as $question) {
+            $this->addQuestion($question); // force setQcm()
+        }
+
+        return $this;
+    }
+
+
+
+
 }

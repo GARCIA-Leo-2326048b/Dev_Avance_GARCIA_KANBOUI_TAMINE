@@ -53,6 +53,6 @@ class DocumentController extends AbstractController
             }
         }
 
-        return $this->render('home/index.html.twig');
+        return $this->render('error/index.html.twig');
     }
 }

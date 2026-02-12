@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Résultat du QCM : {{ qcm.title }}</h1>
+
+    <p>
+        Votre score : <strong>{{ score }} / {{ total }}</strong>
+    </p>
+
+    <a href="{{ path('generate_qcm', {id: qcm.id}) }}">
+        Refaire le QCM
+    </a>
+
+{% endblock %}
+g

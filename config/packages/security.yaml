@@ -13,6 +13,10 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+            pattern: ^/api
+            stateless: true
+            security: false
         main:
             lazy: true
             provider: app_user_provider
@@ -39,6 +43,7 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
 
         # admin
+        - { path: ^/api, roles: ROLE_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
         # prof
