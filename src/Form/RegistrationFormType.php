@@ -15,8 +15,25 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * Le RegistrationFormType définit le formulaire d’inscription des utilisateurs.
+ * Il permet de collecter les informations nécessaires à la création d’un compte,
+ * telles que le type d’utilisateur (étudiant ou professeur), l’email,
+ * le nom, le prénom et le mot de passe, tout en appliquant des contraintes
+ * de validation.
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * Construit le formulaire d’inscription.
+     * Cette méthode définit les différents champs du formulaire,
+     * leurs types, leurs labels, ainsi que les contraintes de validation
+     * associées à chaque champ.
+     *
+     * @param FormBuilderInterface $builder Interface permettant de construire le formulaire
+     * @param array $options Options de configuration du formulaire
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -104,6 +121,14 @@ class RegistrationFormType extends AbstractType
             ]);
     }
 
+    /**
+     * Configure les options par défaut du formulaire.
+     * Associe le formulaire à l’entité User afin que les données
+     * soient automatiquement mappées sur cet objet.
+     *
+     * @param OptionsResolver $resolver Gestionnaire des options du formulaire
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
