@@ -45,11 +45,11 @@ class Qcm
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?string $description = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne]
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?Document $document = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne]
     #[Groups(['qcm:read', 'qcm:write'])]
     private ?Video $video = null;
 
@@ -170,6 +170,19 @@ class Qcm
 
         return $this;
     }
+
+    public function setQuestions(iterable $questions): static
+    {
+        $this->questions = new ArrayCollection();
+
+        foreach ($questions as $question) {
+            $this->addQuestion($question); // force setQcm()
+        }
+
+        return $this;
+    }
+
+
 
 
 }

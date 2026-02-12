@@ -112,5 +112,18 @@ class Question
         return $this;
     }
 
+    public function setResponses(iterable $responses): static
+    {
+        $this->responses = new ArrayCollection();
+
+        foreach ($responses as $response) {
+            $this->addResponse($response); // force setQuestion()
+        }
+
+        return $this;
+    }
+
+
+
 
 }
