@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Qcm;
-use App\Repository\QcmRepository;
+use App\Entity\Document;
+use App\Repository\DocumentRepository;
+use PhpParser\Comment\Doc;
+use PhpParser\Node\Scalar\String_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,14 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class QcmController extends AbstractController
 {
-    #[Route('/qcm/{id}/generate', name: 'generate_qcm')]
+    #[Route('/qcm/generate', name: 'generate_qcm')]
     public function generateQCM(
-        int $id,
-        QcmRepository $qcmRepository,
+        DocumentRepository $documentRepository,
         Request $request
     ): Response {
-
-        $qcm = $qcmRepository->find($id);
+        $documentLink = $request->query->get('documentLink');
+        $document = $documentRepository->findOneByLink($documentLink);
+        $qcm = $document->getQcm();
 
         if (!$qcm) {
             throw $this->createNotFoundException('QCM introuvable');

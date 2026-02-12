@@ -54,7 +54,12 @@
                             </p>
 
                             <div class="course-actions">
-                                <a href="{{ path('qcm_document', {'documentLink': document.link}) }}" class="btn btn-secondary">Générer QCM (Prof)</a>
+                                {% if is_granted('ROLE_TEACHER') %}
+                                    <a href="{{ path('qcm_document', {'documentLink': document.link}) }}" class="btn btn-secondary">Générer le QCM</a>
+                                {% endif %}
+                                {% if is_granted('ROLE_USER') %}
+                                    <a href="{{ path('generate_qcm', { documentLink: document.link }) }}" class="btn btn-secondary">Passer le QCM</a>
+                                {% endif %}
                                 <a href="{{ document.link }}" target="_blank" class="btn btn-primary">Télécharger</a>
                             </div>
                         </div>

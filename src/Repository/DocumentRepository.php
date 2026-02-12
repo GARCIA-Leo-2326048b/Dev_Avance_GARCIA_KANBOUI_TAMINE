@@ -26,6 +26,16 @@ class DocumentRepository extends ServiceEntityRepository
             ->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_SINGLE_SCALAR);
     }
 
+    public function findOneByLink(string $link): ?Document
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.link = :link')
+            ->setParameter('link', $link)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
     public function findById(int $id): ?Document
     {
         return $this->createQueryBuilder('d')
