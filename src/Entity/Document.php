@@ -55,10 +55,10 @@ class Document
     #[Groups(['Document:read', 'Document:write', 'qcm:read'])]
     private ?User $teacher = null;
 
-    #[ORM\OneToOne(inversedBy: 'document', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\OneToOne(targetEntity: Qcm::class, mappedBy: 'document', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['Document:read', 'Document:write'])]
     private ?Qcm $qcm = null;
+
 
     /**
      * Retourne l'identifiant du document.
@@ -198,13 +198,19 @@ class Document
     /**
      * Définit le QCM associé au document.
      *
-     * @param Qcm $qcm le QCM à associer
+     * @param Qcm|null $qcm le QCM à associer
      * @return $this
      */
-    public function setQcm(Qcm $qcm): static
+    public function setQcm(?Qcm $qcm): static
     {
         $this->qcm = $qcm;
 
+        if ($qcm !== null && $qcm->getDocument() !== $this) {
+            $qcm->setDocument($this);
+        }
+
         return $this;
     }
+
+
 }

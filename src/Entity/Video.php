@@ -55,10 +55,10 @@ class Video
     #[Groups(['Video:read', 'Video:write', 'qcm:read'])]
     private ?User $teacher = null;
 
-    #[ORM\OneToOne(inversedBy: 'video', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\OneToOne(targetEntity: Qcm::class, mappedBy: 'video', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['Video:read', 'Video:write'])]
     private ?Qcm $qcm = null;
+
 
     /**
      * Retourne l'identifiant de la vidéo.
@@ -198,13 +198,19 @@ class Video
     /**
      * Définit le QCM associé à la vidéo.
      *
-     * @param Qcm $qcm le QCM à associer
+     * @param Qcm|null $qcm le QCM à associer
      * @return $this
      */
-    public function setQcm(Qcm $qcm): static
+    public function setQcm(?Qcm $qcm): static
     {
         $this->qcm = $qcm;
 
+        if ($qcm !== null && $qcm->getVideo() !== $this) {
+            $qcm->setVideo($this);
+        }
+
         return $this;
     }
+
+
 }
