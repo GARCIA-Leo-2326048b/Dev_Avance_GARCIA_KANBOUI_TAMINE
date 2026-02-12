@@ -22,7 +22,7 @@ class VideoController extends AbstractController
 
             if ($videoFile) {
 
-                // Sécurité basique : MP4 uniquement
+                // Vérification mp4
                 if ($videoFile->guessExtension() !== 'mp4') {
                     $this->addFlash('error', 'La vidéo doit être au format MP4.');
                     return $this->redirectToRoute('video_new');
@@ -37,7 +37,6 @@ class VideoController extends AbstractController
                     $filename
                 );
 
-                // Entité
                 $video = new Video();
                 $video->setTitle($request->request->get('title'));
                 $video->setLink('/uploads/videos/' . $filename);
@@ -45,7 +44,6 @@ class VideoController extends AbstractController
                 $video->setDuration(0); // calculable plus tard
                 $video->setDescription(null);
 
-                // Sauvegarde
                 $em->persist($video);
                 $em->flush();
 
@@ -53,6 +51,6 @@ class VideoController extends AbstractController
             }
         }
 
-        return $this->render('home/index.html.twig');
+        return $this->render('error/index.html.twig');
     }
 }

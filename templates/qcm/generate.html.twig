@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ qcm.title }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ qcm.title }}</h1>
+    <p>{{ qcm.description }}</p>
+
+    <form method="post">
+
+        {% for question in qcm.questions %}
+
+            <div class="question-block">
+                <h3>{{ loop.index }}. {{ question.question }}</h3>
+
+                {% for response in question.responses %}
+                    <div>
+                        <input type="radio"
+                               name="question_{{ question.id }}"
+                               value="{{ response.id }}"
+                               required>
+
+                        <label>{{ response.label }}</label>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">
+            Valider le QCM
+        </button>
+
+    </form>
+
+{% endblock %}
