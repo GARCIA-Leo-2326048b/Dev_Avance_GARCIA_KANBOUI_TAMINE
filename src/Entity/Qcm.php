@@ -37,7 +37,7 @@ class Qcm
     #[Groups(['qcm:read', 'Document:read', 'Video:read', 'Question:read', 'QuizzAttemp:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 255)]
     #[Groups(['qcm:read', 'qcm:write', 'Document:read', 'Video:read', 'Question:read', 'QuizzAttemp:read'])]
     private ?string $title = null;
 
